@@ -1,0 +1,98 @@
+[2024-05-12T01:52:47.332+0000] {processor.py:161} INFO - Started process (PID=35) to work on /home/airflow/.local/lib/python3.12/site-packages/airflow/example_dags/example_time_delta_sensor_async.py
+[2024-05-12T01:52:47.337+0000] {processor.py:830} INFO - Processing file /home/airflow/.local/lib/python3.12/site-packages/airflow/example_dags/example_time_delta_sensor_async.py for tasks to queue
+[2024-05-12T01:52:47.361+0000] {logging_mixin.py:188} INFO - [2024-05-12T01:52:47.361+0000] {dagbag.py:545} INFO - Filling up the DagBag from /home/airflow/.local/lib/python3.12/site-packages/airflow/example_dags/example_time_delta_sensor_async.py
+[2024-05-12T01:52:47.371+0000] {processor.py:840} INFO - DAG(s) 'example_time_delta_sensor_async' retrieved from /home/airflow/.local/lib/python3.12/site-packages/airflow/example_dags/example_time_delta_sensor_async.py
+[2024-05-12T01:52:47.386+0000] {logging_mixin.py:188} INFO - [2024-05-12T01:52:47.386+0000] {dag.py:3096} INFO - Sync 1 DAGs
+[2024-05-12T01:52:47.413+0000] {logging_mixin.py:188} INFO - [2024-05-12T01:52:47.413+0000] {dag.py:3954} INFO - Setting next_dagrun for example_time_delta_sensor_async to None, run_after=None
+[2024-05-12T01:52:47.422+0000] {processor.py:183} INFO - Processing /home/airflow/.local/lib/python3.12/site-packages/airflow/example_dags/example_time_delta_sensor_async.py took 0.097 seconds
+[2024-05-12T01:53:17.550+0000] {processor.py:161} INFO - Started process (PID=93) to work on /home/airflow/.local/lib/python3.12/site-packages/airflow/example_dags/example_time_delta_sensor_async.py
+[2024-05-12T01:53:17.550+0000] {processor.py:830} INFO - Processing file /home/airflow/.local/lib/python3.12/site-packages/airflow/example_dags/example_time_delta_sensor_async.py for tasks to queue
+[2024-05-12T01:53:17.551+0000] {logging_mixin.py:188} INFO - [2024-05-12T01:53:17.551+0000] {dagbag.py:545} INFO - Filling up the DagBag from /home/airflow/.local/lib/python3.12/site-packages/airflow/example_dags/example_time_delta_sensor_async.py
+[2024-05-12T01:53:17.553+0000] {processor.py:840} INFO - DAG(s) 'example_time_delta_sensor_async' retrieved from /home/airflow/.local/lib/python3.12/site-packages/airflow/example_dags/example_time_delta_sensor_async.py
+[2024-05-12T01:53:17.592+0000] {logging_mixin.py:188} INFO - [2024-05-12T01:53:17.592+0000] {dag.py:3096} INFO - Sync 1 DAGs
+[2024-05-12T01:53:17.597+0000] {logging_mixin.py:188} INFO - [2024-05-12T01:53:17.596+0000] {dag.py:3954} INFO - Setting next_dagrun for example_time_delta_sensor_async to None, run_after=None
+[2024-05-12T01:53:17.604+0000] {processor.py:183} INFO - Processing /home/airflow/.local/lib/python3.12/site-packages/airflow/example_dags/example_time_delta_sensor_async.py took 0.057 seconds
+[2024-05-12T01:53:47.942+0000] {processor.py:161} INFO - Started process (PID=151) to work on /home/airflow/.local/lib/python3.12/site-packages/airflow/example_dags/example_time_delta_sensor_async.py
+[2024-05-12T01:53:47.942+0000] {processor.py:830} INFO - Processing file /home/airflow/.local/lib/python3.12/site-packages/airflow/example_dags/example_time_delta_sensor_async.py for tasks to queue
+[2024-05-12T01:53:47.943+0000] {logging_mixin.py:188} INFO - [2024-05-12T01:53:47.943+0000] {dagbag.py:545} INFO - Filling up the DagBag from /home/airflow/.local/lib/python3.12/site-packages/airflow/example_dags/example_time_delta_sensor_async.py
+[2024-05-12T01:53:47.945+0000] {processor.py:840} INFO - DAG(s) 'example_time_delta_sensor_async' retrieved from /home/airflow/.local/lib/python3.12/site-packages/airflow/example_dags/example_time_delta_sensor_async.py
+[2024-05-12T01:53:47.954+0000] {logging_mixin.py:188} INFO - [2024-05-12T01:53:47.954+0000] {dag.py:3096} INFO - Sync 1 DAGs
+[2024-05-12T01:53:47.959+0000] {logging_mixin.py:188} INFO - [2024-05-12T01:53:47.959+0000] {dag.py:3954} INFO - Setting next_dagrun for example_time_delta_sensor_async to None, run_after=None
+[2024-05-12T01:53:47.966+0000] {processor.py:183} INFO - Processing /home/airflow/.local/lib/python3.12/site-packages/airflow/example_dags/example_time_delta_sensor_async.py took 0.027 seconds
+[2024-05-12T01:54:18.768+0000] {processor.py:161} INFO - Started process (PID=209) to work on /home/airflow/.local/lib/python3.12/site-packages/airflow/example_dags/example_time_delta_sensor_async.py
+[2024-05-12T01:54:18.769+0000] {processor.py:830} INFO - Processing file /home/airflow/.local/lib/python3.12/site-packages/airflow/example_dags/example_time_delta_sensor_async.py for tasks to queue
+[2024-05-12T01:54:18.770+0000] {logging_mixin.py:188} INFO - [2024-05-12T01:54:18.770+0000] {dagbag.py:545} INFO - Filling up the DagBag from /home/airflow/.local/lib/python3.12/site-packages/airflow/example_dags/example_time_delta_sensor_async.py
+[2024-05-12T01:54:18.772+0000] {processor.py:840} INFO - DAG(s) 'example_time_delta_sensor_async' retrieved from /home/airflow/.local/lib/python3.12/site-packages/airflow/example_dags/example_time_delta_sensor_async.py
+[2024-05-12T01:54:18.781+0000] {logging_mixin.py:188} INFO - [2024-05-12T01:54:18.781+0000] {dag.py:3096} INFO - Sync 1 DAGs
+[2024-05-12T01:54:18.787+0000] {logging_mixin.py:188} INFO - [2024-05-12T01:54:18.786+0000] {dag.py:3954} INFO - Setting next_dagrun for example_time_delta_sensor_async to None, run_after=None
+[2024-05-12T01:54:18.794+0000] {processor.py:183} INFO - Processing /home/airflow/.local/lib/python3.12/site-packages/airflow/example_dags/example_time_delta_sensor_async.py took 0.028 seconds
+[2024-05-12T01:54:49.330+0000] {processor.py:161} INFO - Started process (PID=267) to work on /home/airflow/.local/lib/python3.12/site-packages/airflow/example_dags/example_time_delta_sensor_async.py
+[2024-05-12T01:54:49.330+0000] {processor.py:830} INFO - Processing file /home/airflow/.local/lib/python3.12/site-packages/airflow/example_dags/example_time_delta_sensor_async.py for tasks to queue
+[2024-05-12T01:54:49.331+0000] {logging_mixin.py:188} INFO - [2024-05-12T01:54:49.331+0000] {dagbag.py:545} INFO - Filling up the DagBag from /home/airflow/.local/lib/python3.12/site-packages/airflow/example_dags/example_time_delta_sensor_async.py
+[2024-05-12T01:54:49.333+0000] {processor.py:840} INFO - DAG(s) 'example_time_delta_sensor_async' retrieved from /home/airflow/.local/lib/python3.12/site-packages/airflow/example_dags/example_time_delta_sensor_async.py
+[2024-05-12T01:54:49.342+0000] {logging_mixin.py:188} INFO - [2024-05-12T01:54:49.342+0000] {dag.py:3096} INFO - Sync 1 DAGs
+[2024-05-12T01:54:49.347+0000] {logging_mixin.py:188} INFO - [2024-05-12T01:54:49.347+0000] {dag.py:3954} INFO - Setting next_dagrun for example_time_delta_sensor_async to None, run_after=None
+[2024-05-12T01:54:49.355+0000] {processor.py:183} INFO - Processing /home/airflow/.local/lib/python3.12/site-packages/airflow/example_dags/example_time_delta_sensor_async.py took 0.028 seconds
+[2024-05-12T01:55:19.809+0000] {processor.py:161} INFO - Started process (PID=325) to work on /home/airflow/.local/lib/python3.12/site-packages/airflow/example_dags/example_time_delta_sensor_async.py
+[2024-05-12T01:55:19.809+0000] {processor.py:830} INFO - Processing file /home/airflow/.local/lib/python3.12/site-packages/airflow/example_dags/example_time_delta_sensor_async.py for tasks to queue
+[2024-05-12T01:55:19.810+0000] {logging_mixin.py:188} INFO - [2024-05-12T01:55:19.810+0000] {dagbag.py:545} INFO - Filling up the DagBag from /home/airflow/.local/lib/python3.12/site-packages/airflow/example_dags/example_time_delta_sensor_async.py
+[2024-05-12T01:55:19.812+0000] {processor.py:840} INFO - DAG(s) 'example_time_delta_sensor_async' retrieved from /home/airflow/.local/lib/python3.12/site-packages/airflow/example_dags/example_time_delta_sensor_async.py
+[2024-05-12T01:55:19.821+0000] {logging_mixin.py:188} INFO - [2024-05-12T01:55:19.821+0000] {dag.py:3096} INFO - Sync 1 DAGs
+[2024-05-12T01:55:19.826+0000] {logging_mixin.py:188} INFO - [2024-05-12T01:55:19.826+0000] {dag.py:3954} INFO - Setting next_dagrun for example_time_delta_sensor_async to None, run_after=None
+[2024-05-12T01:55:19.833+0000] {processor.py:183} INFO - Processing /home/airflow/.local/lib/python3.12/site-packages/airflow/example_dags/example_time_delta_sensor_async.py took 0.027 seconds
+[2024-05-12T01:55:50.313+0000] {processor.py:161} INFO - Started process (PID=383) to work on /home/airflow/.local/lib/python3.12/site-packages/airflow/example_dags/example_time_delta_sensor_async.py
+[2024-05-12T01:55:50.313+0000] {processor.py:830} INFO - Processing file /home/airflow/.local/lib/python3.12/site-packages/airflow/example_dags/example_time_delta_sensor_async.py for tasks to queue
+[2024-05-12T01:55:50.314+0000] {logging_mixin.py:188} INFO - [2024-05-12T01:55:50.314+0000] {dagbag.py:545} INFO - Filling up the DagBag from /home/airflow/.local/lib/python3.12/site-packages/airflow/example_dags/example_time_delta_sensor_async.py
+[2024-05-12T01:55:50.317+0000] {processor.py:840} INFO - DAG(s) 'example_time_delta_sensor_async' retrieved from /home/airflow/.local/lib/python3.12/site-packages/airflow/example_dags/example_time_delta_sensor_async.py
+[2024-05-12T01:55:50.327+0000] {logging_mixin.py:188} INFO - [2024-05-12T01:55:50.327+0000] {dag.py:3096} INFO - Sync 1 DAGs
+[2024-05-12T01:55:50.333+0000] {logging_mixin.py:188} INFO - [2024-05-12T01:55:50.332+0000] {dag.py:3954} INFO - Setting next_dagrun for example_time_delta_sensor_async to None, run_after=None
+[2024-05-12T01:55:50.350+0000] {processor.py:183} INFO - Processing /home/airflow/.local/lib/python3.12/site-packages/airflow/example_dags/example_time_delta_sensor_async.py took 0.041 seconds
+[2024-05-12T01:56:20.882+0000] {processor.py:161} INFO - Started process (PID=441) to work on /home/airflow/.local/lib/python3.12/site-packages/airflow/example_dags/example_time_delta_sensor_async.py
+[2024-05-12T01:56:20.882+0000] {processor.py:830} INFO - Processing file /home/airflow/.local/lib/python3.12/site-packages/airflow/example_dags/example_time_delta_sensor_async.py for tasks to queue
+[2024-05-12T01:56:20.883+0000] {logging_mixin.py:188} INFO - [2024-05-12T01:56:20.883+0000] {dagbag.py:545} INFO - Filling up the DagBag from /home/airflow/.local/lib/python3.12/site-packages/airflow/example_dags/example_time_delta_sensor_async.py
+[2024-05-12T01:56:20.885+0000] {processor.py:840} INFO - DAG(s) 'example_time_delta_sensor_async' retrieved from /home/airflow/.local/lib/python3.12/site-packages/airflow/example_dags/example_time_delta_sensor_async.py
+[2024-05-12T01:56:20.895+0000] {logging_mixin.py:188} INFO - [2024-05-12T01:56:20.895+0000] {dag.py:3096} INFO - Sync 1 DAGs
+[2024-05-12T01:56:20.901+0000] {logging_mixin.py:188} INFO - [2024-05-12T01:56:20.901+0000] {dag.py:3954} INFO - Setting next_dagrun for example_time_delta_sensor_async to None, run_after=None
+[2024-05-12T01:56:20.908+0000] {processor.py:183} INFO - Processing /home/airflow/.local/lib/python3.12/site-packages/airflow/example_dags/example_time_delta_sensor_async.py took 0.029 seconds
+[2024-05-12T01:56:51.466+0000] {processor.py:161} INFO - Started process (PID=499) to work on /home/airflow/.local/lib/python3.12/site-packages/airflow/example_dags/example_time_delta_sensor_async.py
+[2024-05-12T01:56:51.467+0000] {processor.py:830} INFO - Processing file /home/airflow/.local/lib/python3.12/site-packages/airflow/example_dags/example_time_delta_sensor_async.py for tasks to queue
+[2024-05-12T01:56:51.468+0000] {logging_mixin.py:188} INFO - [2024-05-12T01:56:51.468+0000] {dagbag.py:545} INFO - Filling up the DagBag from /home/airflow/.local/lib/python3.12/site-packages/airflow/example_dags/example_time_delta_sensor_async.py
+[2024-05-12T01:56:51.470+0000] {processor.py:840} INFO - DAG(s) 'example_time_delta_sensor_async' retrieved from /home/airflow/.local/lib/python3.12/site-packages/airflow/example_dags/example_time_delta_sensor_async.py
+[2024-05-12T01:56:51.481+0000] {logging_mixin.py:188} INFO - [2024-05-12T01:56:51.480+0000] {dag.py:3096} INFO - Sync 1 DAGs
+[2024-05-12T01:56:51.487+0000] {logging_mixin.py:188} INFO - [2024-05-12T01:56:51.487+0000] {dag.py:3954} INFO - Setting next_dagrun for example_time_delta_sensor_async to None, run_after=None
+[2024-05-12T01:56:51.494+0000] {processor.py:183} INFO - Processing /home/airflow/.local/lib/python3.12/site-packages/airflow/example_dags/example_time_delta_sensor_async.py took 0.031 seconds
+[2024-05-12T01:57:21.975+0000] {processor.py:161} INFO - Started process (PID=557) to work on /home/airflow/.local/lib/python3.12/site-packages/airflow/example_dags/example_time_delta_sensor_async.py
+[2024-05-12T01:57:21.976+0000] {processor.py:830} INFO - Processing file /home/airflow/.local/lib/python3.12/site-packages/airflow/example_dags/example_time_delta_sensor_async.py for tasks to queue
+[2024-05-12T01:57:21.978+0000] {logging_mixin.py:188} INFO - [2024-05-12T01:57:21.978+0000] {dagbag.py:545} INFO - Filling up the DagBag from /home/airflow/.local/lib/python3.12/site-packages/airflow/example_dags/example_time_delta_sensor_async.py
+[2024-05-12T01:57:21.981+0000] {processor.py:840} INFO - DAG(s) 'example_time_delta_sensor_async' retrieved from /home/airflow/.local/lib/python3.12/site-packages/airflow/example_dags/example_time_delta_sensor_async.py
+[2024-05-12T01:57:21.992+0000] {logging_mixin.py:188} INFO - [2024-05-12T01:57:21.992+0000] {dag.py:3096} INFO - Sync 1 DAGs
+[2024-05-12T01:57:21.998+0000] {logging_mixin.py:188} INFO - [2024-05-12T01:57:21.998+0000] {dag.py:3954} INFO - Setting next_dagrun for example_time_delta_sensor_async to None, run_after=None
+[2024-05-12T01:57:22.008+0000] {processor.py:183} INFO - Processing /home/airflow/.local/lib/python3.12/site-packages/airflow/example_dags/example_time_delta_sensor_async.py took 0.036 seconds
+[2024-05-12T01:57:52.434+0000] {processor.py:161} INFO - Started process (PID=616) to work on /home/airflow/.local/lib/python3.12/site-packages/airflow/example_dags/example_time_delta_sensor_async.py
+[2024-05-12T01:57:52.434+0000] {processor.py:830} INFO - Processing file /home/airflow/.local/lib/python3.12/site-packages/airflow/example_dags/example_time_delta_sensor_async.py for tasks to queue
+[2024-05-12T01:57:52.436+0000] {logging_mixin.py:188} INFO - [2024-05-12T01:57:52.436+0000] {dagbag.py:545} INFO - Filling up the DagBag from /home/airflow/.local/lib/python3.12/site-packages/airflow/example_dags/example_time_delta_sensor_async.py
+[2024-05-12T01:57:52.439+0000] {processor.py:840} INFO - DAG(s) 'example_time_delta_sensor_async' retrieved from /home/airflow/.local/lib/python3.12/site-packages/airflow/example_dags/example_time_delta_sensor_async.py
+[2024-05-12T01:57:52.452+0000] {logging_mixin.py:188} INFO - [2024-05-12T01:57:52.452+0000] {dag.py:3096} INFO - Sync 1 DAGs
+[2024-05-12T01:57:52.467+0000] {logging_mixin.py:188} INFO - [2024-05-12T01:57:52.467+0000] {dag.py:3954} INFO - Setting next_dagrun for example_time_delta_sensor_async to None, run_after=None
+[2024-05-12T01:57:52.476+0000] {processor.py:183} INFO - Processing /home/airflow/.local/lib/python3.12/site-packages/airflow/example_dags/example_time_delta_sensor_async.py took 0.045 seconds
+[2024-05-12T01:58:22.980+0000] {processor.py:161} INFO - Started process (PID=675) to work on /home/airflow/.local/lib/python3.12/site-packages/airflow/example_dags/example_time_delta_sensor_async.py
+[2024-05-12T01:58:22.980+0000] {processor.py:830} INFO - Processing file /home/airflow/.local/lib/python3.12/site-packages/airflow/example_dags/example_time_delta_sensor_async.py for tasks to queue
+[2024-05-12T01:58:22.981+0000] {logging_mixin.py:188} INFO - [2024-05-12T01:58:22.981+0000] {dagbag.py:545} INFO - Filling up the DagBag from /home/airflow/.local/lib/python3.12/site-packages/airflow/example_dags/example_time_delta_sensor_async.py
+[2024-05-12T01:58:22.983+0000] {processor.py:840} INFO - DAG(s) 'example_time_delta_sensor_async' retrieved from /home/airflow/.local/lib/python3.12/site-packages/airflow/example_dags/example_time_delta_sensor_async.py
+[2024-05-12T01:58:22.995+0000] {logging_mixin.py:188} INFO - [2024-05-12T01:58:22.995+0000] {dag.py:3096} INFO - Sync 1 DAGs
+[2024-05-12T01:58:23.002+0000] {logging_mixin.py:188} INFO - [2024-05-12T01:58:23.002+0000] {dag.py:3954} INFO - Setting next_dagrun for example_time_delta_sensor_async to None, run_after=None
+[2024-05-12T01:58:23.016+0000] {processor.py:183} INFO - Processing /home/airflow/.local/lib/python3.12/site-packages/airflow/example_dags/example_time_delta_sensor_async.py took 0.039 seconds
+[2024-05-12T01:58:53.661+0000] {processor.py:161} INFO - Started process (PID=734) to work on /home/airflow/.local/lib/python3.12/site-packages/airflow/example_dags/example_time_delta_sensor_async.py
+[2024-05-12T01:58:53.661+0000] {processor.py:830} INFO - Processing file /home/airflow/.local/lib/python3.12/site-packages/airflow/example_dags/example_time_delta_sensor_async.py for tasks to queue
+[2024-05-12T01:58:53.662+0000] {logging_mixin.py:188} INFO - [2024-05-12T01:58:53.662+0000] {dagbag.py:545} INFO - Filling up the DagBag from /home/airflow/.local/lib/python3.12/site-packages/airflow/example_dags/example_time_delta_sensor_async.py
+[2024-05-12T01:58:53.664+0000] {processor.py:840} INFO - DAG(s) 'example_time_delta_sensor_async' retrieved from /home/airflow/.local/lib/python3.12/site-packages/airflow/example_dags/example_time_delta_sensor_async.py
+[2024-05-12T01:58:53.673+0000] {logging_mixin.py:188} INFO - [2024-05-12T01:58:53.673+0000] {dag.py:3096} INFO - Sync 1 DAGs
+[2024-05-12T01:58:53.678+0000] {logging_mixin.py:188} INFO - [2024-05-12T01:58:53.678+0000] {dag.py:3954} INFO - Setting next_dagrun for example_time_delta_sensor_async to None, run_after=None
+[2024-05-12T01:58:53.684+0000] {processor.py:183} INFO - Processing /home/airflow/.local/lib/python3.12/site-packages/airflow/example_dags/example_time_delta_sensor_async.py took 0.026 seconds
+[2024-05-12T01:59:24.430+0000] {processor.py:161} INFO - Started process (PID=793) to work on /home/airflow/.local/lib/python3.12/site-packages/airflow/example_dags/example_time_delta_sensor_async.py
+[2024-05-12T01:59:24.431+0000] {processor.py:830} INFO - Processing file /home/airflow/.local/lib/python3.12/site-packages/airflow/example_dags/example_time_delta_sensor_async.py for tasks to queue
+[2024-05-12T01:59:24.432+0000] {logging_mixin.py:188} INFO - [2024-05-12T01:59:24.432+0000] {dagbag.py:545} INFO - Filling up the DagBag from /home/airflow/.local/lib/python3.12/site-packages/airflow/example_dags/example_time_delta_sensor_async.py
+[2024-05-12T01:59:24.434+0000] {processor.py:840} INFO - DAG(s) 'example_time_delta_sensor_async' retrieved from /home/airflow/.local/lib/python3.12/site-packages/airflow/example_dags/example_time_delta_sensor_async.py
+[2024-05-12T01:59:24.443+0000] {logging_mixin.py:188} INFO - [2024-05-12T01:59:24.443+0000] {dag.py:3096} INFO - Sync 1 DAGs
+[2024-05-12T01:59:24.448+0000] {logging_mixin.py:188} INFO - [2024-05-12T01:59:24.448+0000] {dag.py:3954} INFO - Setting next_dagrun for example_time_delta_sensor_async to None, run_after=None
+[2024-05-12T01:59:24.456+0000] {processor.py:183} INFO - Processing /home/airflow/.local/lib/python3.12/site-packages/airflow/example_dags/example_time_delta_sensor_async.py took 0.028 seconds
