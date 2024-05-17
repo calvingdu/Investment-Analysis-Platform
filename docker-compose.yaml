@@ -18,7 +18,7 @@ x-airflow-common:
     NEWS_API_KEY: ${NEWS_API_KEY}
     COIN_API_KEY: ${COIN_API_KEY}
     STOCK_API_KEY: ${STOCK_API_KEY}
-    
+
     # AIRFLOW_CONFIG: '/opt/airflow/config/airflow.cfg'
   volumes:
     - ${AIRFLOW_PROJ_DIR:-.}/dags:/opt/airflow/dags

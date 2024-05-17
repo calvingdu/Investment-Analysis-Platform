@@ -1,7 +1,12 @@
-from airflow.models import BaseOperator
-from airflow.hooks.postgres_hook import PostgresHook
+from __future__ import annotations
+
+from sqlalchemy import MetaData
+from sqlalchemy import Table
+from sqlalchemy import update
 from sqlalchemy.dialects.postgresql import insert
-from sqlalchemy import create_engine, MetaData, Table, update
+
+from airflow.hooks.postgres_hook import PostgresHook
+from airflow.models import BaseOperator
 
 """
 job_log Schema:
@@ -14,11 +19,7 @@ job_log Schema:
 
 
 class JobLogOperator(BaseOperator):
-    def __init__(
-        self, 
-        postgres_conn_id = "POSTGRES_CONN_ID",
-        *args,
-        **kwargs):
+    def __init__(self, postgres_conn_id="POSTGRES_CONN_ID", *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.postgres_conn_id = postgres_conn_id
 
@@ -36,21 +37,29 @@ class JobLogOperator(BaseOperator):
         pg_hook = PostgresHook(postgres_conn_id=self.postgres_conn_id)
         engine = pg_hook.get_sqlalchemy_engine()
 
-        job_log = Table('job_log', MetaData(), autoload_with=engine)
-        stmt = insert(job_log).values(job_name=job_name, status='start').returning(job_log.c.job_log_id)
+        job_log = Table("job_log", MetaData(), autoload_with=engine)
+        stmt = (
+            insert(job_log)
+            .values(job_name=job_name, status="start")
+            .returning(job_log.c.job_log_id)
+        )
 
         with engine.connect() as conn:
             result = conn.execute(stmt)
             job_log_id = result.fetchone()[0]
 
         return job_log_id
-    
+
     def update_job_log(self, job_log_id: int):
         pg_hook = PostgresHook(postgres_conn_id=self.postgres_conn_id)
         engine = pg_hook.get_sqlalchemy_engine()
 
-        job_log = Table('job_log', MetaData(), autoload_with=engine)
-        stmt = update(job_log).where(job_log.c.job_log_id == job_log_id).values(status='end')
+        job_log = Table("job_log", MetaData(), autoload_with=engine)
+        stmt = (
+            update(job_log)
+            .where(job_log.c.job_log_id == job_log_id)
+            .values(status="end")
+        )
 
         with engine.connect() as conn:
             conn.execute(stmt)
