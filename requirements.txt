@@ -7,6 +7,7 @@ black==23.7.0
 flake8==6.0.0
 email==6.0.0a1
 scikit-learn==1.4.2
-sqlalchemy==2.0.20
+sqlalchemy
 requests
 matplotlib
+fmpsdk
