@@ -1,0 +1,4 @@
+env
+airflow.db
+logs/
+.env

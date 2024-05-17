@@ -1,0 +1,5 @@
+[flake8]
+max-line-length = 120
+exclude =
+    __pycache__,
+    expect_column_values_to_not_contain_special_characters.py,

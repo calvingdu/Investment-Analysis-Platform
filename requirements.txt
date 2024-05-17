@@ -1,0 +1,13 @@
+python-dotenv==0.15.0
+pandas
+great-expectations
+pre-commit==3.3.3
+pytest==7.4.0
+black==23.7.0
+flake8==6.0.0
+email==6.0.0a1
+scikit-learn==1.4.2
+sqlalchemy
+requests
+matplotlib
+fmpsdk
