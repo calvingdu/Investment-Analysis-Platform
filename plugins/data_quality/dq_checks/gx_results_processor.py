@@ -1,5 +1,40 @@
 from __future__ import annotations
 
+import pandas as pd
+from email_sender.email_sender import EmailSender
+
+
+def gx_validate_results(
+    valid_exceptions: list[str],
+    gx_results: dict,
+    **kwargs,
+):
+    if not gx_results["success"]:
+        if all(
+            exception in gx_results["error_message"] for exception in valid_exceptions
+        ):
+            print("Check Failed but all exceptions are valid")
+            return True
+        else:
+            print("Check Failed and there are invalid exceptions")
+            return False
+    else:
+        print("Check Passed")
+        return True
+
+
+def gx_error_email(gx_results, data_asset_name, job_log_id, **kwargs):
+    email_sender = EmailSender()
+    dq_check_parameters = {
+        "asset_name": data_asset_name,
+        "file": f"Job Log Id: {job_log_id}",
+        "error_exceptions": gx_results["error_message"],
+        "data_docs_site": gx_results["data_docs_site"],
+        "timestamp": pd.Timestamp.now().strftime("%Y-%m-%d %H:%M:%S"),
+    }
+
+    email_sender.send_dq_notification_email(parameters=dq_check_parameters)
+
 
 def process_gx_results(result):
     error_message = ""

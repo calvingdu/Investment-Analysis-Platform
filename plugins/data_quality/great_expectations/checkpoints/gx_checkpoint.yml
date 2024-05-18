@@ -3,11 +3,11 @@ config_version: 1.0
 template_name:
 module_name: great_expectations.checkpoint
 class_name: Checkpoint
-run_name_template: news_bronze
-expectation_suite_name: news_bronze_suite
+run_name_template: news_silver
+expectation_suite_name: news_silver_suite
 batch_request:
   datasource_name: pandas_datasource
-  data_asset_name: news_bronze
+  data_asset_name: news_silver
   options: {}
 action_list:
   - name: store_validation_result

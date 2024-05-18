@@ -8,12 +8,32 @@ tables:
 
   - table: news_bronze
     columns:
-      - url: "VARCHAR(255) PRIMARY KEY"
+      - url: "TEXT PRIMARY KEY"
       - topic: "VARCHAR(255)"
       - source: "VARCHAR(255)"
       - author: "VARCHAR(255)"
-      - title: "VARCHAR(255)"
-      - description: "VARCHAR(255)"
+      - title: "TEXT"
+      - description: "TEXT"
       - published_at: "TIMESTAMP"
-      - content: "VARCHAR(255)"
+      - content: "TEXT"
+      - job_log_id: "INTEGER NOT NULL"
+
+  - table: news_silver
+    columns:
+      - url: "TEXT PRIMARY KEY"
+      - topic: "VARCHAR(255)"
+      - source: "VARCHAR(255)"
+      - author: "VARCHAR(255)"
+      - title: "TEXT"
+      - description: "TEXT"
+      - published_at: "TIMESTAMP"
+      - content: "TEXT"
+      - published_date: "DATE"
+      - year: "INTEGER"
+      - month: "INTEGER"
+      - day: "INTEGER"
+      - title_sentiment: "VARCHAR(255)"
+      - title_score: "FLOAT"
+      - content_sentiment: "VARCHAR(255)"
+      - content_score: "FLOAT"
       - job_log_id: "INTEGER NOT NULL"

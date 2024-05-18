@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Email Notification</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f5f5f5;
+      margin: 0;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      background-color: #fff;
+      border-radius: 5px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .header {
+      background-color: #007bff;
+      color: #fff;
+      padding: 20px;
+      border-top-left-radius: 5px;
+      border-top-right-radius: 5px;
+    }
+
+    .header h1 {
+      margin: 0;
+      font-size: 24px;
+    }
+
+    .content {
+      padding: 20px;
+    }
+
+    .footer {
+      background-color: #f5f5f5;
+      padding: 20px;
+      text-align: center;
+      border-bottom-left-radius: 5px;
+      border-bottom-right-radius: 5px;
+    }
+
+    .link {
+      color: #007bff;
+      text-decoration: underline;
+    }
+
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>Data Quality Error Notification </h1>
+    </div>
+    <div class="content">
+      <p>An issue with Data Quality has been detected. Please review the details below:</p>
+      <ul>
+        <li><strong>Asset Name:</strong> $asset_name</li>
+        <li><strong>Failed Exceptions:</strong> $error_exceptions </li>
+        <li><strong>Data Docs Site:</strong> <a href=$data_docs_site class="link">$data_docs_site</a></li>
+        <li><strong>Processing Timestamp:</strong> $timestamp </li>
+      </ul>
+      <p>Kindly take appropriate actions to resolve the issue promptly.</p>
+      <p>Thank you,</p>
+      <p><strong>Calvin</strong></p>
+    </div>
+    <div class="footer">
+      <p>This email is for notification purposes only. Please do not reply to this email.</p>
+    </div>
+  </div>
+</body>
+</html>
