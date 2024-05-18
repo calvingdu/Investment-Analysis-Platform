@@ -1,0 +1,28 @@
+name: gx_checkpoint
+config_version: 1.0
+template_name:
+module_name: great_expectations.checkpoint
+class_name: Checkpoint
+run_name_template: news_bronze
+expectation_suite_name: news_bronze_suite
+batch_request:
+  datasource_name: pandas_datasource
+  data_asset_name: news_bronze
+  options: {}
+action_list:
+  - name: store_validation_result
+    action:
+      class_name: StoreValidationResultAction
+  - name: store_evaluation_params
+    action:
+      class_name: StoreEvaluationParametersAction
+  - name: update_data_docs
+    action:
+      class_name: UpdateDataDocsAction
+      site_names: []
+evaluation_parameters: {}
+runtime_configuration: {}
+validations: []
+profilers: []
+ge_cloud_id:
+expectation_suite_ge_cloud_id:

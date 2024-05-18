@@ -2,17 +2,18 @@ tables:
   - table: job_log
     columns:
       - job_log_id: "SERIAL PRIMARY KEY"
-      - job_name: "TEXT NOT NULL"
+      - job_name: "VARCHAR(255) NOT NULL"
       - run_timestamp: "TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP"
-      - status: "TEXT CHECK (status IN ('start', 'end')) NOT NULL"
+      - status: "VARCHAR(255) CHECK (status IN ('start', 'end')) NOT NULL"
 
   - table: news_bronze
     columns:
-      - url: "TEXT PRIMARY KEY"
-      - source: "TEXT"
-      - author: "TEXT"
-      - title: "TEXT"
-      - description: "TEXT"
+      - url: "VARCHAR(255) PRIMARY KEY"
+      - topic: "VARCHAR(255)"
+      - source: "VARCHAR(255)"
+      - author: "VARCHAR(255)"
+      - title: "VARCHAR(255)"
+      - description: "VARCHAR(255)"
       - published_at: "TIMESTAMP"
-      - content: "TEXT"
+      - content: "VARCHAR(255)"
       - job_log_id: "INTEGER NOT NULL"

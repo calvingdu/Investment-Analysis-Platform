@@ -1,0 +1,13 @@
+dags:
+  - dag_id: "ethereum_news_api_feed"
+    schedule: "@daily"
+    news_topic: "ethereum"
+    endpoint: "top-headlines"
+    from_date: null
+    to_date: null
+  - dag_id: "bitcoin_news_api_feed"
+    schedule: "@daily"
+    news_topic: "bitcoin"
+    endpoint: "top-headlines"
+    from_date: null
+    to_date: null

@@ -79,7 +79,7 @@ class PandasToPostgresOperator(BaseOperator):
             temp_table = self.table + "_temp"
             with engine.connect() as conn:
                 conn.execute(
-                    f"CREATE TEMP TABLE {temp_table} AS TABLE {self.table} WITH NO DATA;",
+                    f"CREATE TEMP TABLE {temp_table} AS TABLE {self.table} WITH NO DATA",
                 )
 
                 self.df.to_sql(temp_table, engine, if_exists="append", index=False)
@@ -89,14 +89,12 @@ class PandasToPostgresOperator(BaseOperator):
                 (SELECT {', '.join(columns)}
                 FROM {temp_table})
                 ON CONFLICT ({', '.join(primary_key)}) DO NOTHING
-                RETURNING *;
-                """
+                RETURNING * """
 
             with engine.connect() as conn:
                 result = conn.execute(insert_sql)
+                conn.execute(f"DROP TABLE {temp_table} ")
 
-            with engine.connect() as conn:
-                conn.execute(f"DROP TABLE {temp_table};")
             rows_updated = result.rowcount
         else:
             self.df.to_sql(self.table, engine, if_exists="append", index=False)
