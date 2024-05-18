@@ -5,3 +5,4 @@ logs/
 .vscode
 .DS_Store
 uncommitted
+airflow/logs/
