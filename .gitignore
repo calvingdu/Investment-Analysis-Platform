@@ -8,3 +8,4 @@ uncommitted
 airflow/logs/
 /__pycache__
 __pycache__/
+plugins/data_quality/great_expectations/checkpoints/
