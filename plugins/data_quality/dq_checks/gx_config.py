@@ -5,6 +5,8 @@ import os
 from great_expectations.checkpoint import Checkpoint
 from great_expectations.data_context.types.base import DataContextConfig
 
+from airflow.providers.postgres.hooks.postgres import PostgresHook
+
 
 def get_data_context_config(ge_root_dir, expectation_subdir=""):
     data_context_config = DataContextConfig(
@@ -105,6 +107,85 @@ def get_checkpoint_config(
             "evaluation_parameters": evaluation_parameters,
             "runtime_configuration": {},
             "validations": [],
+            "data_context": context,
+        },
+    )
+    return checkpoint_config
+
+
+# SQL
+def get_sql_datasource_config():
+    sql_hook = PostgresHook("POSTGRES_CONN_ID")
+    connection_string = sql_hook.get_uri()
+
+    datasource_config = {
+        "name": "postgresql_datasource",
+        "class_name": "Datasource",
+        "execution_engine": {
+            "class_name": "SqlAlchemyExecutionEngine",
+            "connection_string": connection_string,
+        },
+        "data_connectors": {
+            "runtime_data_connector": {
+                "class_name": "RuntimeDataConnector",
+                "batch_identifiers": ["default_identifier_name"],
+            },
+            "inferred_data_connector": {
+                "class_name": "InferredAssetSqlDataConnector",
+                "include_schema_name": True,
+            },
+        },
+    }
+
+    return datasource_config
+
+
+def get_sql_checkpoint_config(
+    query: str,
+    data_asset_name: str,
+    expectation_suite_name: str,
+    evaluation_parameters: dict,
+    context,
+):
+    checkpoint_config = Checkpoint(
+        **{
+            "name": f"gx_checkpoint_{expectation_suite_name}",
+            "config_version": 1.0,
+            "template_name": None,
+            "run_name_template": data_asset_name,
+            "action_list": [
+                {
+                    "name": "store_validation_result",
+                    "action": {"class_name": "StoreValidationResultAction"},
+                },
+                {
+                    "name": "store_evaluation_params",
+                    "action": {"class_name": "StoreEvaluationParametersAction"},
+                },
+                {
+                    "name": "update_data_docs",
+                    "action": {"class_name": "UpdateDataDocsAction", "site_names": []},
+                },
+            ],
+            "evaluation_parameters": evaluation_parameters,
+            "runtime_configuration": {},
+            "validations": [
+                {
+                    "batch_request": {
+                        "datasource_name": "postgresql_datasource",
+                        "data_connector_name": "runtime_data_connector",
+                        "data_asset_name": f"sql_{data_asset_name}",
+                        "runtime_parameters": {
+                            "query": query,
+                        },
+                        "batch_identifiers": {
+                            "default_identifier_name": "default_identifier",
+                        },
+                        "batch_spec_passthrough": {"create_temp_table": False},
+                    },
+                    "expectation_suite_name": expectation_suite_name,
+                },
+            ],
             "data_context": context,
         },
     )

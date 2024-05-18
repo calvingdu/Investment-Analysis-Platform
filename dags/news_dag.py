@@ -1,13 +1,14 @@
 from __future__ import annotations
 
-import pandas as pd
 import pendulum
 from operators.DataQualityOperator import DataQualityPandasOperator
+from operators.DataQualityOperator import DataQualitySQLCheckOperator
 from operators.JobLogOperator import JobLogOperator
 from operators.NewsAPIOperator import NewsAPIToDataframeOperator
 from operators.PostgresOperator import PandasToPostgresOperator
 from operators.PostgresOperator import PostgresToPandasOperator
 from scripts.transform_news import transform_news_bronze
+from scripts.transform_news import transform_news_silver
 
 from airflow.decorators import dag
 from airflow.decorators import task
@@ -44,41 +45,45 @@ def test_news_api():
         job_log_id = job_log_operator.start_job_log("bitcoin_news_api")
         return job_log_id
 
-    @task(task_id="transform_news_bronze")
-    def bronze_processing(job_log_id: int, **kwargs):
+    @task(task_id="transform_bronze")
+    def transform_bronze(**kwargs):
+        job_log_id = kwargs["ti"].xcom_pull(task_ids="start_job_log")
         df = kwargs["ti"].xcom_pull(task_ids="extract_api_data")
         transformed_df = transform_news_bronze(
             df,
             job_log_id=job_log_id,
-            topic="bitcoin",
+            topic=NEWS_TOPIC,
         )
         return transformed_df
 
     @task(task_id="dq_bronze")
-    def dq_bronze(df: pd.DataFrame):
-        operator = DataQualityPandasOperator(
-            task_id="dq_task",
-            dataframe=df,
-            data_asset_name="news_bronze",
+    def dq_bronze(**kwargs):
+        job_log_id = kwargs["ti"].xcom_pull(task_ids="start_job_log")
+        operator = DataQualitySQLCheckOperator(
+            task_id="sql_dq_task",
+            sql_conn_id="POSTGRES_CONN_ID",
+            data_asset_name=f"{NEWS_TOPIC}_news_bronze",
+            sql_table="news_bronze",
             expectation_suite_name="news_bronze_suite",
+            job_log_id=job_log_id,
         )
         result = operator.execute()
         print(result)
 
-    @task(task_id="upload_to_sql_bronze")
+    @task(task_id="load_to_sql_bronze")
     def bronze_sql(**kwargs):
-        df = kwargs["ti"].xcom_pull(task_ids="transform_news_bronze")
+        df = kwargs["ti"].xcom_pull(task_ids="transform_bronze")
         operator = PandasToPostgresOperator(
-            task_id="upload_to_sql_bronze",
+            task_id="load_to_sql_bronze",
             table="news_bronze",
             df=df,
         )
-
         rows_updated = operator.execute()
         return rows_updated
 
     @task.branch(task_id="check_empty")
-    def check_empty(rows_updated):
+    def check_empty(**kwargs):
+        rows_updated = kwargs["ti"].xcom_pull(task_ids="load_to_sql_bronze")
         if rows_updated == 0:
             return "update_job_log"
         else:
@@ -86,7 +91,7 @@ def test_news_api():
 
     @task(task_id="extract_bronze")
     def extract_bronze(**kwargs):
-        job_log_id = kwargs["ti"].xcom_pull(task_id="start_job_log")
+        job_log_id = kwargs["ti"].xcom_pull(task_ids="start_job_log")
         df = PostgresToPandasOperator(
             task_id="Extract_DF",
             sql=f"SELECT * FROM news_bronze where job_log_id = {job_log_id}",
@@ -94,47 +99,65 @@ def test_news_api():
         print(df)
         return df
 
-    @task()
-    def transform():
-        return True
+    @task(task_id="transform_silver")
+    def transform_silver(**kwargs):
+        df = kwargs["ti"].xcom_pull(task_ids="extract_bronze")
+        silver_df = transform_news_silver(df=df)
+        return silver_df
 
-    @task()
-    def silver_sql(df):
+    @task(task_id="dq_silver")
+    def dq_silver(**kwargs):
+        df = kwargs["ti"].xcom_pull(task_ids="transform_silver")
+        job_log_id = kwargs["ti"].xcom_pull(task_ids="start_job_log")
+        operator = DataQualityPandasOperator(
+            task_id="dq_task_silver",
+            dataframe=df,
+            data_asset_name="news_silver",
+            expectation_suite_name="news_silver_suite",
+            job_log_id=job_log_id,
+        )
+        result = operator.execute()
+        print(result)
+
+    @task(task_id="silver_sql")
+    def silver_sql(**kwargs):
+        df = kwargs["ti"].xcom_pull(task_ids="transform_silver")
         operator = PandasToPostgresOperator(
             task_id="upload_to_sql",
             table="news_silver",
             df=df,
         )
-
         operator.execute()
 
-    @task(task_id="update_job_log", trigger_rule="all_done")
+    @task(task_id="update_job_log", trigger_rule="none_failed")
     def update_job_log(**kwargs):
         job_log_id = kwargs["ti"].xcom_pull(task_ids="start_job_log")
         job_log_operator = JobLogOperator(task_id="update_job_log")
         job_log_operator.update_job_log(job_log_id)
 
+    # Define task dependencies
     api_data_df = extract_api_data()
     job_log_id = start_job_log()
-    bronze_df = bronze_processing(job_log_id)
-    dq_task = dq_bronze(bronze_df)
+    bronze_df = transform_bronze()
     rows_updated = bronze_sql()
-    checked_rows = check_empty(rows_updated)
+    dq_bronze_task = dq_bronze()
+    checked_rows = check_empty()
     extracted_bronze_df = extract_bronze()
-    transformed_df = transform()
-    silver_task = silver_sql(transformed_df)
+    silver_df = transform_silver()
+    dq_silver_task = dq_silver()
+    silver_sql_task = silver_sql()
     update_job_log_task = update_job_log()
 
     (
         api_data_df
         >> job_log_id
         >> bronze_df
-        >> dq_task
         >> rows_updated
-        >> checked_rows
+        >> [dq_bronze_task, checked_rows]
         >> extracted_bronze_df
-        >> transformed_df
-        >> silver_task
+        >> silver_df
+        >> dq_silver_task
+        >> silver_sql_task
         >> update_job_log_task
     )
 

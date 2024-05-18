@@ -1,0 +1,36 @@
+name: gx_checkpoint_news_bronze_suite
+config_version: 1.0
+template_name:
+module_name: great_expectations.checkpoint
+class_name: Checkpoint
+run_name_template: bitcoin_news_bronze
+expectation_suite_name:
+batch_request: {}
+action_list:
+  - name: store_validation_result
+    action:
+      class_name: StoreValidationResultAction
+  - name: store_evaluation_params
+    action:
+      class_name: StoreEvaluationParametersAction
+  - name: update_data_docs
+    action:
+      class_name: UpdateDataDocsAction
+      site_names: []
+evaluation_parameters: {}
+runtime_configuration: {}
+validations:
+  - batch_request:
+      datasource_name: postgresql_datasource
+      data_connector_name: runtime_data_connector
+      data_asset_name: sql_bitcoin_news_bronze
+      runtime_parameters:
+        query: SELECT * FROM news_bronze WHERE job_log_id = 8
+      batch_identifiers:
+        default_identifier_name: default_identifier
+      batch_spec_passthrough:
+        create_temp_table: false
+    expectation_suite_name: news_bronze_suite
+profilers: []
+ge_cloud_id:
+expectation_suite_ge_cloud_id:
