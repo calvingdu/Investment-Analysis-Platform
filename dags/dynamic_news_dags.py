@@ -22,12 +22,13 @@ with open("/opt/airflow/plugins/dag_configs/news_dag_config.yaml") as config_fil
 
 # Generate DAGs dynamically
 for dag_config in config["dags"]:
-    dag_id = dag_config["dag_id"]
-    schedule = dag_config["schedule"]
     news_topic = dag_config["news_topic"]
+    schedule = dag_config["schedule"]
     endpoint = dag_config["endpoint"]
     from_date = dag_config["from_date"]
     to_date = dag_config.get("to_date")
+
+    dag_id = f"{news_topic}_news_api_dag"
 
     if from_date is None:
         from_date = datetime.date.today() - datetime.timedelta(days=30)
@@ -50,7 +51,12 @@ for dag_config in config["dags"]:
     )
 
     @task(task_id="extract_api_data", dag=dag)
-    def extract_api_data():
+    def extract_api_data(
+        news_topic=news_topic,
+        from_date=from_date,
+        to_date=to_date,
+        endpoint=endpoint,
+    ):
         print(
             f"Extracting data for {news_topic} from {from_date} to {to_date} from {endpoint} endpoint",
         )
@@ -185,8 +191,7 @@ for dag_config in config["dags"]:
         >> job_log_id
         >> bronze_df
         >> rows_updated
-        >> dq_bronze_task
-        >> checked_rows
+        >> [dq_bronze_task, checked_rows]
         >> extracted_bronze_df
         >> silver_df
         >> dq_silver_task

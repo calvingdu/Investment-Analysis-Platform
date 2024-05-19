@@ -16,7 +16,8 @@ class DataQualityPandasOperator(BaseOperator):
         data_asset_name: str,
         job_log_id: int,
         expectation_suite_name: str,
-        evalution_parameters={},
+        valid_expectations: list[str] = [],
+        evalution_parameters: dict = {},
         *args,
         **kwargs,
     ):
@@ -26,6 +27,7 @@ class DataQualityPandasOperator(BaseOperator):
         self.data_asset_name = data_asset_name
         self.expectation_suite_name = expectation_suite_name
         self.evalution_parameters = evalution_parameters
+        self.valid_expectations = valid_expectations
 
     def execute(self, **context):
         gx_results = gx_dq_check(
@@ -35,13 +37,19 @@ class DataQualityPandasOperator(BaseOperator):
             evaluation_parameters=self.evalution_parameters,
         )
 
-        gx_validate_results(gx_results=gx_results, valid_exceptions=[])
-        gx_error_email(
-            gx_results=gx_results,
-            data_asset_name=self.data_asset_name,
-            job_log_id=self.job_log_id,
-        )
+        if not gx_results["success"]:
+            gx_error_email(
+                gx_results=gx_results,
+                data_asset_name=self.data_asset_name,
+                job_log_id=self.job_log_id,
+            )
 
+        result = gx_validate_results(
+            gx_results=gx_results,
+            valid_exceptions=self.valid_expectations,
+        )
+        if not result:
+            raise ValueError("Invalid Expectations")
         return gx_results
 
 
@@ -82,11 +90,18 @@ class DataQualitySQLCheckOperator(BaseOperator):
             evaluation_parameters=self.evaluation_parameters,
         )
 
-        gx_validate_results(gx_results=gx_results, valid_exceptions=[])
-        gx_error_email(
+        if not gx_results["success"]:
+            gx_error_email(
+                gx_results=gx_results,
+                data_asset_name=self.data_asset_name,
+                job_log_id=self.job_log_id,
+            )
+
+        result = gx_validate_results(
             gx_results=gx_results,
-            data_asset_name=self.data_asset_name,
-            job_log_id=self.job_log_id,
+            valid_exceptions=self.valid_expectations,
         )
+        if not result:
+            raise ValueError("Invalid Expectations")
 
         return gx_results

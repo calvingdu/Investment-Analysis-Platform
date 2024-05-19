@@ -1,13 +1,21 @@
 dags:
-  - dag_id: "ethereum_news_api_feed"
+  - news_topic: "ethereum"
     schedule: "@daily"
-    news_topic: "ethereum"
     endpoint: "top-headlines"
     from_date: null
     to_date: null
-  - dag_id: "bitcoin_news_api_feed"
+  - news_topic: "bitcoin"
     schedule: "@daily"
-    news_topic: "bitcoin"
+    endpoint: "top-headlines"
+    from_date: null
+    to_date: null
+  - news_topic: "NVIDIA"
+    schedule: "@daily"
+    endpoint: "top-headlines"
+    from_date: null
+    to_date: null
+  - news_topic: "APPLE"
+    schedule: "@daily"
     endpoint: "top-headlines"
     from_date: null
     to_date: null

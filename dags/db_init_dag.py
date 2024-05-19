@@ -37,7 +37,7 @@ def db_init_dag():
             [f"{key} {value}" for col in columns for key, value in col.items()],
         )
         create_table_sql = (
-            f"CREATE TABLE IF NOT EXISTS {table_name} ({column_definitions});"
+            f"CREATE TABLE IF NOT EXISTS {table_name} ({column_definitions}); "
         )
 
         print(f"Creating table with SQL: {create_table_sql}")

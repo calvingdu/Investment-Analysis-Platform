@@ -10,13 +10,19 @@ def gx_validate_results(
     **kwargs,
 ):
     if not gx_results["success"]:
-        if all(
-            exception in gx_results["error_message"] for exception in valid_exceptions
-        ):
+        error_message = gx_results["error_message"]
+        exceptions = [
+            exception.strip()
+            for exception in error_message.split(";")
+            if exception.strip()
+        ]
+        if all(exception in valid_exceptions for exception in exceptions):
             print("Check Failed but all exceptions are valid")
+            print("Error Exceptions: ", exceptions)
             return True
         else:
             print("Check Failed and there are invalid exceptions")
+            print("Error Exceptions: ", exceptions)
             return False
     else:
         print("Check Passed")

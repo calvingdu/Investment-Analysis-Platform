@@ -9,6 +9,14 @@
                 "max_value": 500
             },
             "meta": {}
+        },
+        {
+            "expectation_type": "expect_column_values_to_be_of_type",
+            "kwargs": {
+                "column": "topic",
+                "type_": "str"
+            },
+            "meta": {}
         }
         ],
     "ge_cloud_id": null,
