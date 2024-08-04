@@ -34,9 +34,9 @@ This is a data engineering/science focused project that analyzes the impact of m
 ## Setup Instructions
 
 ### Prerequisites
-1. Make an .env file with API keys (Crypto API, Stock API, News API)
-2. Build Docker Containers
-- make build
-3. Start the Containers
-- make up
-4. Review DAG UI on localhost
+1. **Make an .env file with API keys (Crypto API, Stock API, News API)**
+2. **Build Docker Containers**
+   - make build
+3. **Start the Containers**
+   - make up
+4. **Review DAG UI on localhost**
