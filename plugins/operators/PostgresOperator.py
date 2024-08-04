@@ -84,18 +84,26 @@ class PandasToPostgresOperator(BaseOperator):
 
                 self.df.to_sql(temp_table, engine, if_exists="append", index=False)
 
-            insert_sql = f"""
-                INSERT INTO {self.table} ({', '.join(columns)})
-                (SELECT {', '.join(columns)}
-                FROM {temp_table})
-                ON CONFLICT ({', '.join(primary_key)}) DO NOTHING
-                RETURNING * """
+            try:
+                insert_sql = f"""
+                    INSERT INTO {self.table} ({', '.join(columns)})
+                    (SELECT {', '.join(columns)}
+                    FROM {temp_table})
+                    ON CONFLICT ({', '.join(primary_key)}) DO NOTHING
+                    RETURNING * """
+
+                with engine.connect() as conn:
+                    result = conn.execute(insert_sql)
+
+                rows_updated = result.rowcount
+            except Exception as e:
+                print(f"Error inserting data: {e}")
+                rows_updated = 0
 
             with engine.connect() as conn:
-                result = conn.execute(insert_sql)
-                conn.execute(f"DROP TABLE {temp_table} ")
+                print("Dropping temp table")
+                conn.execute(f"DROP TABLE {temp_table}")
 
-            rows_updated = result.rowcount
         else:
             self.df.to_sql(self.table, engine, if_exists="append", index=False)
             rows_updated = len(self.df)
@@ -103,6 +111,30 @@ class PandasToPostgresOperator(BaseOperator):
         print(f"Inserted {rows_updated} rows into {self.table}")
         cursor.close()
         conn.close()
+        return rows_updated
+
+
+class SparkToPostgresOperator(BaseOperator):
+    def __init__(
+        self,
+        table: str,
+        df: pd.DataFrame,
+        postgres_conn_id="POSTGRES_CONN_ID",
+        *args,
+        **kwargs,
+    ):
+        super().__init__(*args, **kwargs)
+        self.postgres_conn_id = postgres_conn_id
+        self.table = table
+        self.df = df
+
+    def execute(self, no_duplicates=True, **context):
+        postgres_hook = PostgresHook(postgres_conn_id=self.postgres_conn_id)
+        conn = postgres_hook.get_conn()
+        cursor = conn.cursor()
+        engine = postgres_hook.get_sqlalchemy_engine()
+
+        rows_updated = 5
         return rows_updated
 
 

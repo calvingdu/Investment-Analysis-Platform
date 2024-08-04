@@ -10,8 +10,8 @@ from operators.JobLogOperator import JobLogOperator
 from operators.NewsAPIOperator import NewsAPIToDataframeOperator
 from operators.PostgresOperator import PandasToPostgresOperator
 from operators.PostgresOperator import PostgresToPandasOperator
-from scripts.transform_news import transform_news_bronze
-from scripts.transform_news import transform_news_silver
+from scripts.news.transform_news import transform_news_bronze
+from scripts.news.transform_news import transform_news_silver
 
 from airflow import DAG
 from airflow.decorators import task
@@ -23,15 +23,11 @@ with open("/opt/airflow/plugins/dag_configs/news_dag_config.yaml") as config_fil
 # Generate DAGs dynamically
 for dag_config in config["dags"]:
     news_topic = dag_config["news_topic"]
-    schedule = dag_config["schedule"]
-    endpoint = dag_config["endpoint"]
-    from_date = dag_config["from_date"]
-    to_date = dag_config.get("to_date")
-
+    schedule = dag_config.get("schedule", "@daily")
+    endpoint = dag_config.get("endpoint", "top-headlines")
+    from_date = dag_config.get("from_date", None)
+    to_date = dag_config.get("to_date", None)
     dag_id = f"{news_topic}_news_api_dag"
-
-    if from_date is None:
-        from_date = datetime.date.today() - datetime.timedelta(days=30)
 
     default_args = {
         "owner": "airflow",
@@ -57,6 +53,11 @@ for dag_config in config["dags"]:
         to_date=to_date,
         endpoint=endpoint,
     ):
+        if from_date is None:
+            from_date = (
+                datetime.datetime.now() - datetime.timedelta(days=30)
+            ).strftime("%Y-%m-%d")
+
         print(
             f"Extracting data for {news_topic} from {from_date} to {to_date} from {endpoint} endpoint",
         )
@@ -101,18 +102,18 @@ for dag_config in config["dags"]:
         rows_updated = operator.execute()
         return rows_updated
 
-    @task(task_id="dq_bronze", dag=dag)
-    def dq_bronze(**kwargs):
+    @task(task_id="dq_check_bronze", dag=dag)
+    def dq_check_bronze(**kwargs):
         job_log_id = kwargs["ti"].xcom_pull(task_ids="start_job_log")
         import os
 
         print(os.getenv("EMAIL_USERNAME"))
         print(os.getenv("EMAIL_PASSWORD"))
         operator = DataQualitySQLCheckOperator(
-            task_id="sql_dq_task",
+            task_id="sql_dq_check_task",
             sql_conn_id="POSTGRES_CONN_ID",
             data_asset_name=f"{news_topic}_news_bronze",
-            expectation_suite_name="news_bronze_suite",
+            expectation_suite_name="news_bronze",
             sql_table="news_bronze",
             job_log_id=job_log_id,
         )
@@ -143,12 +144,12 @@ for dag_config in config["dags"]:
         silver_df = transform_news_silver(df=df)
         return silver_df
 
-    @task(task_id="dq_silver", dag=dag)
-    def dq_silver(**kwargs):
+    @task(task_id="dq_check_silver", dag=dag)
+    def dq_check_silver(**kwargs):
         df = kwargs["ti"].xcom_pull(task_ids="transform_silver")
         job_log_id = kwargs["ti"].xcom_pull(task_ids="start_job_log")
         operator = DataQualityPandasOperator(
-            task_id="dq_task_silver",
+            task_id="dq_check_task_silver",
             dataframe=df,
             data_asset_name="news_silver",
             expectation_suite_name="news_silver_suite",
@@ -157,7 +158,7 @@ for dag_config in config["dags"]:
         result = operator.execute()
         print(result)
 
-    @task(task_id="silver_sql", dag=dag)
+    @task(task_id="load_to_sql_silver", dag=dag)
     def silver_sql(**kwargs):
         df = kwargs["ti"].xcom_pull(task_ids="transform_silver")
         operator = PandasToPostgresOperator(
@@ -178,11 +179,11 @@ for dag_config in config["dags"]:
     job_log_id = start_job_log()
     bronze_df = transform_bronze()
     rows_updated = bronze_sql()
-    dq_bronze_task = dq_bronze()
+    dq_check_bronze_task = dq_check_bronze()
     checked_rows = check_empty()
     extracted_bronze_df = extract_bronze()
     silver_df = transform_silver()
-    dq_silver_task = dq_silver()
+    dq_check_silver_task = dq_check_silver()
     silver_sql_task = silver_sql()
     update_job_log_task = update_job_log()
 
@@ -191,10 +192,10 @@ for dag_config in config["dags"]:
         >> job_log_id
         >> bronze_df
         >> rows_updated
-        >> [dq_bronze_task, checked_rows]
+        >> [dq_check_bronze_task, checked_rows]
         >> extracted_bronze_df
         >> silver_df
-        >> dq_silver_task
+        >> dq_check_silver_task
         >> silver_sql_task
         >> update_job_log_task
     )

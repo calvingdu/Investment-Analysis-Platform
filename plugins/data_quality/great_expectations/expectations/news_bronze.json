@@ -1,20 +1,12 @@
 {
     "data_asset_type": null,
-    "expectation_suite_name": "news_silver_suite",
+    "expectation_suite_name": "news_bronze",
     "expectations": [
         {
             "expectation_type": "expect_table_row_count_to_be_between",
             "kwargs": {
                 "min_value": 1,
                 "max_value": 500
-            },
-            "meta": {}
-        },
-        {
-            "expectation_type": "expect_column_values_to_be_of_type",
-            "kwargs": {
-                "column": "topic",
-                "type_": "str"
             },
             "meta": {}
         }

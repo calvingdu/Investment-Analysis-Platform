@@ -5,8 +5,8 @@ from sqlalchemy import Table
 from sqlalchemy import update
 from sqlalchemy.dialects.postgresql import insert
 
-from airflow.hooks.postgres_hook import PostgresHook
 from airflow.models import BaseOperator
+from airflow.providers.postgres.hooks.postgres import PostgresHook
 
 """
 job_log Schema:

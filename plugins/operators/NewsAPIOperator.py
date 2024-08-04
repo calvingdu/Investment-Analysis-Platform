@@ -29,9 +29,6 @@ def get_news(
             'Sort by must be either "relevancy", "popularity", or "publishedAt"',
         )
 
-    if from_date is None:
-        from_date = datetime.now().strftime("%Y-%m-%d")
-
     url = (
         "https://newsapi.org/v2/everything?"
         f"q={query}&"
@@ -80,5 +77,6 @@ class NewsAPIToDataframeOperator(BaseOperator):
             self.page_size,
             self.page_number,
         )
+        print(news_result)
         articles = news_result["articles"]
         return pd.DataFrame(articles)

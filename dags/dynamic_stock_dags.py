@@ -1,76 +1,86 @@
 from __future__ import annotations
 
+import datetime
+
 import pendulum
+import yaml
 from operators.DataQualityOperator import DataQualityPandasOperator
 from operators.DataQualityOperator import DataQualitySQLCheckOperator
 from operators.JobLogOperator import JobLogOperator
-from operators.NewsAPIOperator import NewsAPIToDataframeOperator
 from operators.PostgresOperator import PandasToPostgresOperator
 from operators.PostgresOperator import PostgresToPandasOperator
-from scripts.news.transform_news import transform_news_bronze
-from scripts.news.transform_news import transform_news_silver
+from scripts.transform_stock_company_profile import (
+    transform_stock_company_profile_bronze,
+)
+from scripts.transform_stock_company_profile import (
+    transform_stock_company_profile_silver,
+)
 
-from airflow.decorators import dag
+from airflow import DAG
 from airflow.decorators import task
 
-NEWS_TOPIC = "bitcoin"
+# Load configuration
+with open("/opt/airflow/plugins/dag_configs/stock_dag_config.yaml") as config_file:
+    config = yaml.safe_load(config_file)
 
+# Generate DAGs dynamically
+for dag_config in config["dags"]:
+    symbol = dag_config["symbol"]
+    schedule = dag_config.get("schedule", "@monthly")
 
-@dag(
-    schedule=None,
-    start_date=pendulum.datetime(2021, 1, 1, tz="UTC"),
-    catchup=False,
-    tags=["news_api"],
-)
-def test_news_api():
-    @task(task_id="extract_api_data")
-    def extract_api_data():
-        operator = NewsAPIToDataframeOperator(
-            task_id="extract_api_data",
-            news_topic=NEWS_TOPIC,
-            endpoint="top-headlines",
-            from_date="2024-04-18",
-            to_date=None,
-            sort_by="popularity",
-            page_size=100,
-            page_number=1,
+    dag_id = f"{symbol}_company_profile_api_dag"
+
+    if from_date is None:
+        from_date = datetime.date.today() - datetime.timedelta(days=30)
+
+    default_args = {
+        "owner": "airflow",
+        "depends_on_past": False,
+        "start_date": pendulum.datetime(2021, 1, 1, tz="UTC"),
+        "catchup": False,
+        "retries": 0,
+    }
+
+    dag = DAG(
+        dag_id=dag_id,
+        default_args=default_args,
+        description="A dynamic DAG for extracting and processing stock data",
+        schedule_interval=schedule,
+        catchup=False,
+        tags=["news_api"],
+    )
+
+    @task(task_id="extract_api_data", dag=dag)
+    def extract_api_data(
+        symbol=symbol,
+    ):
+        print(
+            f"Extracting Company Profile for {symbol}",
         )
-
+        operator = StockCompanyProfileAPIToDataframeOperator(
+            task_id="extract_api_data",
+            symbol=symbol,
+        )
         df = operator.execute()
         return df
 
-    @task(task_id="start_job_log")
+    @task(task_id="start_job_log", dag=dag)
     def start_job_log():
         job_log_operator = JobLogOperator(task_id="start_job_log")
-        job_log_id = job_log_operator.start_job_log("bitcoin_news_api")
+        job_log_id = job_log_operator.start_job_log(dag_id)
         return job_log_id
 
-    @task(task_id="transform_bronze")
+    @task(task_id="transform_bronze", dag=dag)
     def transform_bronze(**kwargs):
         job_log_id = kwargs["ti"].xcom_pull(task_ids="start_job_log")
         df = kwargs["ti"].xcom_pull(task_ids="extract_api_data")
-        transformed_df = transform_news_bronze(
+        transformed_df = transform_stock_company_profile_bronze(
             df,
             job_log_id=job_log_id,
-            topic=NEWS_TOPIC,
         )
         return transformed_df
 
-    @task(task_id="dq_check_bronze")
-    def dq_check_bronze(**kwargs):
-        job_log_id = kwargs["ti"].xcom_pull(task_ids="start_job_log")
-        operator = DataQualitySQLCheckOperator(
-            task_id="sql_dq_check_task",
-            sql_conn_id="POSTGRES_CONN_ID",
-            data_asset_name=f"{NEWS_TOPIC}_news_bronze",
-            sql_table="news_bronze",
-            expectation_suite_name="news_bronze",
-            job_log_id=job_log_id,
-        )
-        result = operator.execute()
-        print(result)
-
-    @task(task_id="load_to_sql_bronze")
+    @task(task_id="load_to_sql_bronze", dag=dag)
     def bronze_sql(**kwargs):
         df = kwargs["ti"].xcom_pull(task_ids="transform_bronze")
         operator = PandasToPostgresOperator(
@@ -81,7 +91,25 @@ def test_news_api():
         rows_updated = operator.execute()
         return rows_updated
 
-    @task.branch(task_id="check_empty")
+    @task(task_id="dq_check_bronze", dag=dag)
+    def dq_check_bronze(**kwargs):
+        job_log_id = kwargs["ti"].xcom_pull(task_ids="start_job_log")
+        import os
+
+        print(os.getenv("EMAIL_USERNAME"))
+        print(os.getenv("EMAIL_PASSWORD"))
+        operator = DataQualitySQLCheckOperator(
+            task_id="sql_dq_check_task",
+            sql_conn_id="POSTGRES_CONN_ID",
+            data_asset_name=f"{symbol}_news_bronze",
+            expectation_suite_name="news_bronze_suite",
+            sql_table="news_bronze",
+            job_log_id=job_log_id,
+        )
+        result = operator.execute()
+        print(result)
+
+    @task.branch(task_id="check_empty", dag=dag)
     def check_empty(**kwargs):
         rows_updated = kwargs["ti"].xcom_pull(task_ids="load_to_sql_bronze")
         if rows_updated == 0:
@@ -89,7 +117,7 @@ def test_news_api():
         else:
             return "extract_bronze"
 
-    @task(task_id="extract_bronze")
+    @task(task_id="extract_bronze", dag=dag)
     def extract_bronze(**kwargs):
         job_log_id = kwargs["ti"].xcom_pull(task_ids="start_job_log")
         df = PostgresToPandasOperator(
@@ -99,13 +127,13 @@ def test_news_api():
         print(df)
         return df
 
-    @task(task_id="transform_silver")
+    @task(task_id="transform_silver", dag=dag)
     def transform_silver(**kwargs):
         df = kwargs["ti"].xcom_pull(task_ids="extract_bronze")
-        silver_df = transform_news_silver(df=df)
+        silver_df = transform_stock_company_profile_silver(df=df)
         return silver_df
 
-    @task(task_id="dq_check_silver")
+    @task(task_id="dq_check_silver", dag=dag)
     def dq_check_silver(**kwargs):
         df = kwargs["ti"].xcom_pull(task_ids="transform_silver")
         job_log_id = kwargs["ti"].xcom_pull(task_ids="start_job_log")
@@ -119,7 +147,7 @@ def test_news_api():
         result = operator.execute()
         print(result)
 
-    @task(task_id="load_to_sql_bronze")
+    @task(task_id="load_to_sql_silver", dag=dag)
     def silver_sql(**kwargs):
         df = kwargs["ti"].xcom_pull(task_ids="transform_silver")
         operator = PandasToPostgresOperator(
@@ -129,7 +157,7 @@ def test_news_api():
         )
         operator.execute()
 
-    @task(task_id="update_job_log", trigger_rule="none_failed")
+    @task(task_id="update_job_log", trigger_rule="none_failed", dag=dag)
     def update_job_log(**kwargs):
         job_log_id = kwargs["ti"].xcom_pull(task_ids="start_job_log")
         job_log_operator = JobLogOperator(task_id="update_job_log")
@@ -161,5 +189,4 @@ def test_news_api():
         >> update_job_log_task
     )
 
-
-test_news_api()
+    globals()[dag_id] = dag

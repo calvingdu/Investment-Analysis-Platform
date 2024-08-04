@@ -1,0 +1,107 @@
+tables:
+  - table: stock_company_profile_bronze
+    columns:
+      - symbol: "VARCHAR(255) PRIMARY KEY"
+      - price: "FLOAT"
+      - beta: "FLOAT"
+      - volavg: "INTEGER"
+      - mktcap: "BIGINT"
+      - lastdiv: "FLOAT"
+      - range: "VARCHAR(255)"
+      - changes: "FLOAT"
+      - companyname: "VARCHAR(255)"
+      - currency: "VARCHAR(255)"
+      - cik: "VARCHAR(255)"
+      - isin: "VARCHAR(255)"
+      - cusip: "VARCHAR(255)"
+      - exchange: "VARCHAR(255)"
+      - exchangeshortname: "VARCHAR(255)"
+      - industry: "VARCHAR(255)"
+      - website: "VARCHAR(255)"
+      - description: "TEXT"
+      - ceo: "VARCHAR(255)"
+      - sector: "VARCHAR(255)"
+      - country: "VARCHAR(255)"
+      - fulltimeemployees: "INTEGER"
+      - phone: "VARCHAR(255)"
+      - address: "VARCHAR(255)"
+      - city: "VARCHAR(255)"
+      - state: "VARCHAR(255)"
+      - zip: "VARCHAR(255)"
+      - dcfdiff: "FLOAT"
+      - dcf: "FLOAT"
+      - image: "VARCHAR(255)"
+      - ipodate: "DATE"
+      - defaultimage: "BOOLEAN"
+      - isetf: "BOOLEAN"
+      - isactivelytrading: "BOOLEAN"
+      - isadr: "BOOLEAN"
+      - isfund: "BOOLEAN"
+      - processed_date: "DATE"
+      - job_log_id: "INTEGER"
+    indexes:
+      - index_name: idx_stock_company_profile_bronze_job_log_id
+        columns:
+          - job_log_id
+    constraints:
+      - constraint_name: unique_symbol_timestamp_stock_company_profile_bronze
+        type: unique
+        columns:
+          - symbol
+          - date
+
+  - table: stock_quote_bronze
+    columns:
+      - symbol: "VARCHAR(255) PRIMARY KEY"
+      - name: "VARCHAR(255)"
+      - price: "FLOAT"
+      - changespercentage: "FLOAT"
+      - change: "FLOAT"
+      - daylow: "FLOAT"
+      - dayhigh: "FLOAT"
+      - yearhigh: "FLOAT"
+      - yearlow: "FLOAT"
+      - marketcap: "BIGINT"
+      - priceavg50: "FLOAT"
+      - priceavg200: "FLOAT"
+      - exchange: "VARCHAR(255)"
+      - volume: "INTEGER"
+      - avgvolume: "INTEGER"
+      - open: "FLOAT"
+      - previousclose: "FLOAT"
+      - eps: "FLOAT"
+      - pe: "FLOAT"
+      - earningsannouncement: "TIMESTAMP"
+      - sharesoutstanding: "BIGINT"
+      - timestamp: "TIMESTAMP"
+      - job_log_id: "INTEGER"
+    indexes:
+      - index_name: idx_stock_company_profile_bronze_job_log_id
+        columns:
+          - job_log_id
+    constraints:
+      - constraint_name: unique_symbol_timestamp_stock_quote_bronze
+        type: unique
+        columns:
+          - symbol
+          - timestamp
+
+  - table: stock_dividends_bronze
+    columns:
+      - symbol: "VARCHAR(255)"
+      - adjdividend: "FLOAT"
+      - dividend: "FLOAT"
+      - paymentdate: "DATE"
+      - recorddate: "DATE"
+      - declareddate: "DATE"
+      - job_log_id: "INTEGER"
+    indexes:
+      - index_name: idx_stock_dividends_bronze_job_log_id
+        columns:
+          - job_log_id
+    constraints:
+      - constraint_name: unique_symbol_payment_date_stock_dividends_bronze
+        type: unique
+        columns:
+          - symbol
+          - paymentDate

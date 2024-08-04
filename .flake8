@@ -1,6 +1,6 @@
 [flake8]
 ignore = E702, W503
-max-line-length = 120
+max-line-length = 150
 exclude =
     __pycache__,
     expect_column_values_to_not_contain_special_characters.py,

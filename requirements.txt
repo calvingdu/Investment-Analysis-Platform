@@ -11,6 +11,6 @@ sqlalchemy
 requests
 matplotlib
 fmpsdk
-
 torch
 transformers
+pyspark

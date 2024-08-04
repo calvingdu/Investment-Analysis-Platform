@@ -1,0 +1,7 @@
+tables:
+  - table: job_log
+    columns:
+      - job_log_id: "SERIAL PRIMARY KEY"
+      - job_name: "VARCHAR(255) NOT NULL"
+      - run_timestamp: "TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP"
+      - status: "VARCHAR(255) CHECK (status IN ('start', 'end')) NOT NULL"

@@ -1,0 +1,9 @@
+dags:
+  - symbol: "AAPL"
+    schedule: "@daily"
+    from_date: null
+    to_date: null
+  - symbol: "TSLA"
+    schedule: "@daily"
+    from_date: null
+    to_date: null

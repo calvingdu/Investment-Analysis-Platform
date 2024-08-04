@@ -19,3 +19,4 @@ dags:
     endpoint: "top-headlines"
     from_date: null
     to_date: null
+  - news_topic: "TESLA"

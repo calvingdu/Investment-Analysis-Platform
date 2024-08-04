@@ -31,6 +31,7 @@ def transform_news_silver(df):
     df["day"] = df["published_date"].dt.day
 
     df = df[df["content"].apply(lambda x: len(x.split(" ")) >= MIN_WORD_COUNT_CONTENT)]
+    df = df[df["title"].apply(lambda x: x != "[Removed]")]
 
     # Sentiment Analysis
     sentiment_pipeline = pipeline(
